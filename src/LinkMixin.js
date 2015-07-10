@@ -14,12 +14,11 @@ export default {
     activeClassName: React.PropTypes.string.isRequired,
     disabled: React.PropTypes.bool,
     to: React.PropTypes.string.isRequired,
-    params: React.PropTypes.object,
     query: React.PropTypes.object,
     onClick: React.PropTypes.func
   },
   contextTypes: {
-    router: React.PropTypes.func.isRequired
+    router: React.PropTypes.object.isRequired
   },
 
   getDefaultProps() {
@@ -37,16 +36,15 @@ export default {
   getLinkProps() {
     let {
       to,
-      params,
       query,
       ...props
     } = this.props;
 
     if (this.props.active === undefined) {
-      props.active = this.context.router.isActive(to, params, query);
+      props.active = this.context.router.isActive(to, query);
     }
 
-    props.href = this.context.router.makeHref(to, params, query);
+    props.href = this.context.router.makeHref(to, query);
 
     props.onClick = this.handleRouteTo;
 
@@ -77,7 +75,7 @@ export default {
     event.preventDefault();
 
     if (allowTransition) {
-      this.context.router.transitionTo(this.props.to, this.props.params, this.props.query);
+      this.context.router.transitionTo(this.props.to, this.props.query);
     }
   }
 };
